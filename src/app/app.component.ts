@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { GoogleSheetService } from 'app/data/google-sheet.service';
+import { environment } from '../environments/environment';
+import { Observable } from 'rxjs/Observable';
+import { Match } from 'app/data/match';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  errorMessage: any;
+  matches: Array<Match> = [];
+
+  constructor(private googleSheetService: GoogleSheetService) {
+    googleSheetService.load$(environment.sheetId)
+      .subscribe(
+        matches => this.matches = matches
+      );
+  }
 }
