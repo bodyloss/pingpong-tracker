@@ -1,3 +1,10 @@
-<p>
-  listing works!
-</p>
+<div class="row">
+  <table class="table table-striped">
+    <tr *ngFor="let match of matches">
+      <td>{{ match.datePlayed | date:'d/M/y'}}</td>
+      <td *ngFor="let game of match.games">
+        {{game.player1}} - {{game.player2}}
+      </td>
+    </tr>
+  </table>
+</div>
