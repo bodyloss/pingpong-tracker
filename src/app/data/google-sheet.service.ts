@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/publishReplay';
 import { Match } from 'app/data/match';
-import { Game } from 'app/data/game';
+import { Score } from "app/data/Score";
 
 @Injectable()
 export class GoogleSheetService {
@@ -23,17 +23,16 @@ export class GoogleSheetService {
           const matches: Array<Match> = [];
           if (entries && entries.length > 0) {
             entries.forEach((entry: Array<any>, index: number) => {
-              const match = new Match();
-
-              match.datePlayed = new Date(entry['gsx$date'].$t);
+              let datePlayed = new Date(entry['gsx$date'].$t);
+              let games: Array<Score> = [];
               let i = 1;
               let score = null;
               while (score = entry[`gsx$score${i}`].$t) {
                 const [player1, player2] = score.replace(/\s/g, '').split('-');
-                match.games.push(new Game(player1, player2));
+                games.push(new Score(player1, player2));
                 i++;
               }
-              matches.push(match);
+              matches.push(new Match(datePlayed, games));
             });
           }
           console.log(matches);
